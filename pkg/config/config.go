@@ -128,16 +128,17 @@ type MetricPerTopicConfig struct {
 
 // Metrics Config is a mapping between a metric send on mqtt to a prometheus metric
 type MetricConfig struct {
-	PrometheusName     string                    `yaml:"prom_name"`
-	MQTTName           string                    `yaml:"mqtt_name"`
-	PayloadField       string                    `yaml:"payload_field"`
-	SensorNameFilter   Regexp                    `yaml:"sensor_name_filter"`
-	Help               string                    `yaml:"help"`
-	ValueType          string                    `yaml:"type"`
-	OmitTimestamp      bool                      `yaml:"omit_timestamp"`
-	ConstantLabels     map[string]string         `yaml:"const_labels"`
-	StringValueMapping *StringValueMappingConfig `yaml:"string_value_mapping"`
-	MQTTValueScale     float64                   `yaml:"mqtt_value_scale"`
+	PrometheusName        string                        `yaml:"prom_name"`
+	MQTTName              string                        `yaml:"mqtt_name"`
+	PayloadField          string                        `yaml:"payload_field"`
+	SensorNameFilter      Regexp                        `yaml:"sensor_name_filter"`
+	Help                  string                        `yaml:"help"`
+	ValueType             string                        `yaml:"type"`
+	OmitTimestamp         bool                          `yaml:"omit_timestamp"`
+	ConstantLabels        map[string]string             `yaml:"const_labels"`
+	StringValueMapping    *StringValueMappingConfig     `yaml:"string_value_mapping"`
+	MQTTValueScale        float64                       `yaml:"mqtt_value_scale"`
+	AttributeLabelMapping []AttributeLabelMappingConfig `yaml:"attribute_labels"`
 }
 
 // StringValueMappingConfig defines the mapping from string to float
@@ -145,6 +146,11 @@ type StringValueMappingConfig struct {
 	// ErrorValue is used when no mapping is found in Map
 	ErrorValue *float64           `yaml:"error_value"`
 	Map        map[string]float64 `yaml:"map"`
+}
+
+type AttributeLabelMappingConfig struct {
+	MQTTName              string  `yaml:"mqtt_name"`
+	LabelName             string  `yaml:"label_name"`
 }
 
 func (mc *MetricConfig) PrometheusDescription() *prometheus.Desc {
